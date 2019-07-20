@@ -13,8 +13,9 @@
 
 <div class="container mt-3">
   <h2>Custom File</h2>
-  <p>To create a custom file upload, wrap a container element with a class of .custom-file around the input with type="file". Then add the .custom-control-input to it:</p>
-  <div>
+  <p>To create a custom file upload, wrap a container element with a class of .custom-file around the input with
+    type="file". Then add the .custom-control-input to it:</p>
+  <div class="form-group">
     <p>Custom file:</p>
     <div class="custom-file mb-3">
       <input type="file" class="custom-file-input" id="customFile" name="filename">
@@ -32,23 +33,26 @@
 
 <script>
   // Add the following code if you want the name of the file appear on select
-  $(".custom-file-input").on("change", function() {
-    getBase64($(this)[0].files[0]).then(result=>{
+  $(".custom-file-input").on("change", function () {
+    getBase64($(this)[0].files[0]).then(result = > {
       var fileName = $(this).val().split("\\").pop();
-    $('.uploaded-file').append(`<div class="row">
-<div class="col-md-4 imagePrievew" style="height: 20px;width:auto;"><img src='${result}'></div>
+    $('.uploaded-file').append(`<div class="row deleteImage" style="margin-top: 30px">
+<div class="col-md-4 imagePrievew" ><img src='${result}' style="height: 20px;width:auto;"></div>
 <div class="col-md-4 imageName">${fileName}</div>
-<div class="col-md-4 imageAction"><a href="/deleteImage" class="stretched-link">Delete</a></div>
+<div class="col-md-4 imageAction"><div  class="btn btn-danger btn-sm" onclick="deleteImage(this)">Delete</div></div>
                                 </div>`)
-  }
-    ).catch(
-      console.log()
-    );
-        //    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+  }).catch(error = > {
+      alert('error..........', error);
+  })
+    ;
   });
 
+  function deleteImage(item) {
+    $(item).closest('.deleteImage').remove()
+  }
+
   function getBase64(file) {
-   return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
